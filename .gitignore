@@ -80,6 +80,7 @@ tmp_output.txt
 # Markdown files
 *.md
 !README.md
+!DOKPLOY.md
 start-boost-mcp.ps1
 *.sql
 *.ps1

@@ -1,0 +1,84 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+README.md
+*.md
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# IDE
+.idea
+.vscode
+.cursor
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Dependencies (will be installed during build)
+node_modules
+vendor
+
+# Build artifacts
+/public/hot
+/public/storage
+/storage/*.key
+/storage/logs/*
+!/storage/logs/.gitkeep
+/storage/framework/cache/*
+!/storage/framework/cache/.gitkeep
+/storage/framework/sessions/*
+!/storage/framework/sessions/.gitkeep
+/storage/framework/views/*
+!/storage/framework/views/.gitkeep
+/bootstrap/cache/*
+!/bootstrap/cache/.gitkeep
+
+# Testing
+/tests
+/coverage
+.phpunit.result.cache
+phpunit.xml
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+*.sql
+*.zip
+*.rar
+*.tar.gz
+
+# Database
+*.sqlite
+*.sqlite3
+*.db
+
+# Scripts
+*.ps1
+*.sh
+export-to-mysql.php
+transfer-data.php
+create-database.php
+check-databases.php
+test-*.php
+test-*.js
+test-*.java
+
+# Archives
+laravel-app.zip
+
+# Coolify/Dokploy specific
+coolify.*
+dokploy.*
+

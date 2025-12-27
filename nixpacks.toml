@@ -3,13 +3,15 @@ nixPkgs = ["nodejs_20", "php82", "php82Packages.composer"]
 
 [phases.install]
 cmds = [
-  "composer install --no-dev --optimize-autoloader --no-interaction",
-  "npm ci --prefer-offline --no-audit",
+  "composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist",
+  "npm ci --prefer-offline --no-audit --legacy-peer-deps",
   "npm run build"
 ]
 
 [phases.build]
 cmds = [
+  "php artisan storage:link || true",
+  "chmod -R 775 storage bootstrap/cache || true",
   "php artisan config:cache || true",
   "php artisan route:cache || true",
   "php artisan view:cache || true"
@@ -21,4 +23,5 @@ cmd = "php artisan serve --host=0.0.0.0 --port=${PORT:-8000}"
 [variables]
 PHP_VERSION = "8.2"
 NODE_VERSION = "20"
+COMPOSER_NO_INTERACTION = "1"
 
