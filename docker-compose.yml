@@ -20,7 +20,7 @@ services:
     depends_on:
       - db
     healthcheck:
-      test: ["CMD-SHELL", "php-fpm-healthcheck || exit 1"]
+      test: ["CMD-SHELL", "php-fpm -t || exit 1"]
       interval: 10s
       timeout: 3s
       retries: 3
@@ -37,12 +37,10 @@ services:
       - "8080:80"
     volumes:
       - ./:/var/www/html
-      - ./public:/var/www/html/public:ro
     networks:
       - laravel
     depends_on:
-      php:
-        condition: service_healthy
+      - php
     healthcheck:
       test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
       interval: 10s
