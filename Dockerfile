@@ -41,6 +41,13 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Copy application files
 COPY . /var/www/html
 
+# Create necessary directories first
+RUN mkdir -p /var/www/html/storage/framework/sessions \
+    && mkdir -p /var/www/html/storage/framework/views \
+    && mkdir -p /var/www/html/storage/framework/cache \
+    && mkdir -p /var/www/html/storage/logs \
+    && mkdir -p /var/www/html/bootstrap/cache
+
 # Install PHP dependencies (if composer.json exists)
 RUN if [ -f /var/www/html/composer.json ]; then \
         cd /var/www/html && composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist; \
@@ -48,15 +55,8 @@ RUN if [ -f /var/www/html/composer.json ]; then \
 
 # Set proper permissions
 RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html/storage \
-    && chmod -R 755 /var/www/html/bootstrap/cache
-
-# Create necessary directories
-RUN mkdir -p /var/www/html/storage/framework/{sessions,views,cache} \
-    && mkdir -p /var/www/html/storage/logs \
-    && mkdir -p /var/www/html/bootstrap/cache \
-    && chown -R www-data:www-data /var/www/html/storage \
-    && chown -R www-data:www-data /var/www/html/bootstrap/cache
+    && chmod -R 775 /var/www/html/storage \
+    && chmod -R 775 /var/www/html/bootstrap/cache
 
 # Install Node.js dependencies and build assets (optional, uncomment if needed)
 # RUN npm ci --prefer-offline --no-audit --legacy-peer-deps \
