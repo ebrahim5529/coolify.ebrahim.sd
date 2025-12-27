@@ -10,15 +10,18 @@ cmds = [
 
 [phases.build]
 cmds = [
+  "mkdir -p storage/framework/{sessions,views,cache}",
+  "mkdir -p storage/logs",
+  "mkdir -p bootstrap/cache",
+  "chmod -R 775 storage bootstrap/cache",
   "php artisan storage:link || true",
-  "chmod -R 775 storage bootstrap/cache || true",
   "php artisan config:cache || true",
   "php artisan route:cache || true",
   "php artisan view:cache || true"
 ]
 
 [start]
-cmd = "php artisan serve --host=0.0.0.0 --port=${PORT:-8000}"
+cmd = "php artisan serve --host=0.0.0.0 --port=${PORT}"
 
 [variables]
 PHP_VERSION = "8.2"

@@ -6,7 +6,7 @@
   "deploy": {
     "restart": "always",
     "healthcheck": {
-      "path": "/",
+      "path": "/up",
       "interval": 30,
       "timeout": 10,
       "retries": 3
@@ -15,7 +15,8 @@
   "environment": {
     "APP_ENV": "production",
     "APP_DEBUG": "false",
-    "LOG_CHANNEL": "stack"
+    "LOG_CHANNEL": "stack",
+    "SERVER_PORT": "8000"
   },
   "volumes": [
     {
