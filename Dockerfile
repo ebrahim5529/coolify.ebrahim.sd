@@ -41,12 +41,13 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Copy application files
 COPY . /var/www/html
 
-# Create necessary directories first
+# Create necessary directories first (in case they don't exist)
 RUN mkdir -p /var/www/html/storage/framework/sessions \
     && mkdir -p /var/www/html/storage/framework/views \
     && mkdir -p /var/www/html/storage/framework/cache \
     && mkdir -p /var/www/html/storage/logs \
-    && mkdir -p /var/www/html/bootstrap/cache
+    && mkdir -p /var/www/html/bootstrap/cache \
+    && mkdir -p /var/www/html/public
 
 # Install PHP dependencies (if composer.json exists)
 RUN if [ -f /var/www/html/composer.json ]; then \
@@ -56,7 +57,8 @@ RUN if [ -f /var/www/html/composer.json ]; then \
 # Set proper permissions
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 /var/www/html/storage \
-    && chmod -R 775 /var/www/html/bootstrap/cache
+    && chmod -R 775 /var/www/html/bootstrap/cache \
+    && chmod -R 755 /var/www/html/public
 
 # Install Node.js dependencies and build assets (optional, uncomment if needed)
 # RUN npm ci --prefer-offline --no-audit --legacy-peer-deps \

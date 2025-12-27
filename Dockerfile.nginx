@@ -25,6 +25,14 @@ server {
     location / {
         try_files $uri $uri/ /index.php?$query_string;
     }
+    
+    # Fallback for Laravel routes
+    location = /index.php {
+        fastcgi_pass php:9000;
+        fastcgi_index index.php;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root/index.php;
+    }
 
     # PHP-FPM configuration
     location ~ \.php$ {
