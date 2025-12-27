@@ -9,7 +9,11 @@ class About extends Component
 {
     public function render()
     {
-        $personalInfo = PersonalInfo::first();
+        try {
+            $personalInfo = PersonalInfo::first();
+        } catch (\Exception $e) {
+            $personalInfo = null;
+        }
         
         return view('livewire.about', [
             'personalInfo' => $personalInfo,

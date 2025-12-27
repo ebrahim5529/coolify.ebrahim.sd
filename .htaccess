@@ -1,0 +1,24 @@
+<IfModule mod_rewrite.c>
+
+<Files .env>
+    order allow,deny
+    Deny from all
+</Files>
+
+RewriteEngine on
+
+# Prevent directory listing
+Options -Indexes -MultiViews
+
+# Force SSL
+RewriteCond %{HTTPS} !=on
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Redirect all requests to public directory
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ public/$1 [QSA,L]
+
+<IfModule mime_module>
+  AddHandler application/x-httpd-ea-php82 .php .php8 .phtml
+</IfModule>

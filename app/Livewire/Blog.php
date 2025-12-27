@@ -9,7 +9,11 @@ class Blog extends Component
 {
     public function render()
     {
-        $posts = BlogPost::latest()->take(3)->get();
+        try {
+            $posts = BlogPost::latest()->take(3)->get();
+        } catch (\Exception $e) {
+            $posts = collect([]);
+        }
         
         return view('livewire.blog', [
             'posts' => $posts,

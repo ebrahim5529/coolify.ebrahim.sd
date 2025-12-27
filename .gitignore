@@ -84,3 +84,5 @@ start-boost-mcp.ps1
 *.sql
 *.ps1
 app/Console/Commands/ExportDatabase.php
+
+sync_config.jsonc

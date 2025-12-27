@@ -9,7 +9,11 @@ class Projects extends Component
 {
     public function render()
     {
-        $projects = Project::all();
+        try {
+            $projects = Project::all();
+        } catch (\Exception $e) {
+            $projects = collect([]);
+        }
         
         return view('livewire.projects', [
             'projects' => $projects,

@@ -45,7 +45,7 @@
                                         >
                                         <span class="text-3xl hidden">{{ $tech->name[0] ?? '💻' }}</span>
                                     @else
-                                        <span class="text-3xl">{{ $tech->icon ?? '💻' }}</span>
+                                    <span class="text-3xl">{{ $tech->icon ?? '💻' }}</span>
                                     @endif
                                 </div>
                             </div>

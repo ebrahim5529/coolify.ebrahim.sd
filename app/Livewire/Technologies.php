@@ -9,7 +9,11 @@ class Technologies extends Component
 {
     public function render()
     {
-        $technologies = Technology::all();
+        try {
+            $technologies = Technology::all();
+        } catch (\Exception $e) {
+            $technologies = collect([]);
+        }
         
         return view('livewire.technologies', [
             'technologies' => $technologies,
