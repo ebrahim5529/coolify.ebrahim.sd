@@ -38,16 +38,13 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copy composer files first (for better layer caching)
-COPY composer.json composer.lock* /var/www/html/
-
-# Install PHP dependencies (if composer files exist)
-RUN if [ -f composer.json ]; then \
-        composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist; \
-    fi
-
 # Copy application files
 COPY . /var/www/html
+
+# Install PHP dependencies (if composer.json exists)
+RUN if [ -f /var/www/html/composer.json ]; then \
+        cd /var/www/html && composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist; \
+    fi
 
 # Set proper permissions
 RUN chown -R www-data:www-data /var/www/html \

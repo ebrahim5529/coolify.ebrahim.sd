@@ -82,8 +82,8 @@ laravel-app.zip
 coolify.*
 dokploy.*
 
-# Docker files (don't copy into container)
+# Docker files (don't copy into container, but we need docker/ for mysql config if used)
 docker-compose.yml
 Dockerfile
+Dockerfile.nginx
 .dockerignore
-docker/
