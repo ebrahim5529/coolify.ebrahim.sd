@@ -81,6 +81,8 @@ tmp_output.txt
 *.md
 !README.md
 !DOKPLOY.md
+!DOKPLOY_DEPLOY.md
+!DOKPLOY_TROUBLESHOOTING.md
 start-boost-mcp.ps1
 *.sql
 *.ps1
