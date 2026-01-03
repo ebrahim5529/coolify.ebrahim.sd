@@ -17,7 +17,7 @@ class Dashboard extends Component
             'projects' => Project::count(),
             'blog_posts' => BlogPost::count(),
             'messages' => ContactMessage::count(),
-            'unread_messages' => ContactMessage::where('read', false)->count(),
+            'unread_messages' => ContactMessage::whereNull('read_at')->count(),
         ];
 
         return view('livewire.admin.dashboard', [

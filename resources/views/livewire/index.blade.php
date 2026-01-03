@@ -4,7 +4,6 @@
         <livewire:hero />
         <livewire:services />
         <livewire:technologies />
-        <livewire:projects />
         <livewire:blog />
         <livewire:about />
         <livewire:contact />

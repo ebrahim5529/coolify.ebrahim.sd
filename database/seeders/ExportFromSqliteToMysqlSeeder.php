@@ -10,6 +10,12 @@ use App\Models\BlogPost;
 use App\Models\Technology;
 use App\Models\ContactMessage;
 use App\Models\User;
+use App\Models\Certification;
+use App\Models\Education;
+use App\Models\PersonalInfo;
+use App\Models\SiteSetting;
+use App\Models\CoreCompetency;
+use App\Models\TechnicalSkill;
 use Exception;
 
 class ExportFromSqliteToMysqlSeeder extends Seeder
@@ -46,6 +52,12 @@ class ExportFromSqliteToMysqlSeeder extends Seeder
             $this->exportTechnologies($localConnection);
             $this->exportUsers($localConnection);
             $this->exportContactMessages($localConnection);
+            $this->exportCertifications($localConnection);
+            $this->exportEducations($localConnection);
+            $this->exportPersonalInfo($localConnection);
+            $this->exportSiteSettings($localConnection);
+            $this->exportCoreCompetencies($localConnection);
+            $this->exportTechnicalSkills($localConnection);
             
             $this->command->info('✅ تم تصدير جميع البيانات بنجاح إلى MySQL!');
             
@@ -253,7 +265,186 @@ class ExportFromSqliteToMysqlSeeder extends Seeder
             $this->command->warn("⚠️ خطأ في تصدير الرسائل: " . $e->getMessage());
         }
     }
+
+    /**
+     * تصدير الشهادات
+     */
+    private function exportCertifications($connection)
+    {
+        try {
+            $this->command->info('📦 تصدير الشهادات...');
+            $certifications = $connection->query("SELECT * FROM certifications ORDER BY `order`")->fetchAll();
+            
+            foreach ($certifications as $cert) {
+                Certification::updateOrCreate(
+                    ['id' => $cert['id']],
+                    [
+                        'name' => $cert['name'],
+                        'order' => $cert['order'] ?? 0,
+                        'created_at' => $cert['created_at'] ?? now(),
+                        'updated_at' => $cert['updated_at'] ?? now(),
+                    ]
+                );
+            }
+            $this->command->info("✅ تم تصدير " . count($certifications) . " شهادة");
+        } catch (Exception $e) {
+            $this->command->warn("⚠️ خطأ في تصدير الشهادات: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * تصدير التعليم
+     */
+    private function exportEducations($connection)
+    {
+        try {
+            $this->command->info('📦 تصدير التعليم...');
+            $educations = $connection->query("SELECT * FROM educations ORDER BY `order`")->fetchAll();
+            
+            foreach ($educations as $edu) {
+                Education::updateOrCreate(
+                    ['id' => $edu['id']],
+                    [
+                        'degree' => $edu['degree'],
+                        'institution' => $edu['institution'],
+                        'order' => $edu['order'] ?? 0,
+                        'created_at' => $edu['created_at'] ?? now(),
+                        'updated_at' => $edu['updated_at'] ?? now(),
+                    ]
+                );
+            }
+            $this->command->info("✅ تم تصدير " . count($educations) . " تعليم");
+        } catch (Exception $e) {
+            $this->command->warn("⚠️ خطأ في تصدير التعليم: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * تصدير المعلومات الشخصية
+     */
+    private function exportPersonalInfo($connection)
+    {
+        try {
+            $this->command->info('📦 تصدير المعلومات الشخصية...');
+            $personalInfo = $connection->query("SELECT * FROM personal_info LIMIT 1")->fetch();
+            
+            if ($personalInfo) {
+                PersonalInfo::updateOrCreate(
+                    ['id' => $personalInfo['id']],
+                    [
+                        'name' => $personalInfo['name'] ?? null,
+                        'job_title' => $personalInfo['job_title'] ?? null,
+                        'description' => $personalInfo['description'] ?? null,
+                        'location' => $personalInfo['location'] ?? null,
+                        'phone' => $personalInfo['phone'] ?? null,
+                        'email' => $personalInfo['email'] ?? null,
+                        'whatsapp' => $personalInfo['whatsapp'] ?? null,
+                        'profile_image' => $personalInfo['profile_image'] ?? null,
+                        'hero_image' => $personalInfo['hero_image'] ?? null,
+                        'professional_summary' => $personalInfo['professional_summary'] ?? null,
+                        'created_at' => $personalInfo['created_at'] ?? now(),
+                        'updated_at' => $personalInfo['updated_at'] ?? now(),
+                    ]
+                );
+                $this->command->info("✅ تم تصدير المعلومات الشخصية");
+            } else {
+                $this->command->warn("⚠️ لا توجد معلومات شخصية للتصدير");
+            }
+        } catch (Exception $e) {
+            $this->command->warn("⚠️ خطأ في تصدير المعلومات الشخصية: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * تصدير إعدادات الموقع
+     */
+    private function exportSiteSettings($connection)
+    {
+        try {
+            $this->command->info('📦 تصدير إعدادات الموقع...');
+            $settings = $connection->query("SELECT * FROM site_settings")->fetchAll();
+            
+            foreach ($settings as $setting) {
+                $value = $setting['value'] ?? null;
+                if ($value && !is_array($value)) {
+                    $value = json_decode($value, true);
+                }
+                
+                SiteSetting::updateOrCreate(
+                    ['key' => $setting['key']],
+                    [
+                        'value' => $value,
+                        'created_at' => $setting['created_at'] ?? now(),
+                        'updated_at' => $setting['updated_at'] ?? now(),
+                    ]
+                );
+            }
+            $this->command->info("✅ تم تصدير " . count($settings) . " إعداد");
+        } catch (Exception $e) {
+            $this->command->warn("⚠️ خطأ في تصدير إعدادات الموقع: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * تصدير الكفاءات الأساسية
+     */
+    private function exportCoreCompetencies($connection)
+    {
+        try {
+            $this->command->info('📦 تصدير الكفاءات الأساسية...');
+            $competencies = $connection->query("SELECT * FROM core_competencies ORDER BY `order`")->fetchAll();
+            
+            foreach ($competencies as $comp) {
+                CoreCompetency::updateOrCreate(
+                    ['id' => $comp['id']],
+                    [
+                        'name' => $comp['name'],
+                        'order' => $comp['order'] ?? 0,
+                        'created_at' => $comp['created_at'] ?? now(),
+                        'updated_at' => $comp['updated_at'] ?? now(),
+                    ]
+                );
+            }
+            $this->command->info("✅ تم تصدير " . count($competencies) . " كفاءة أساسية");
+        } catch (Exception $e) {
+            $this->command->warn("⚠️ خطأ في تصدير الكفاءات الأساسية: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * تصدير المهارات التقنية
+     */
+    private function exportTechnicalSkills($connection)
+    {
+        try {
+            $this->command->info('📦 تصدير المهارات التقنية...');
+            $skills = $connection->query("SELECT * FROM technical_skills ORDER BY `order`")->fetchAll();
+            
+            foreach ($skills as $skill) {
+                $skillsArray = $skill['skills'] ?? null;
+                if ($skillsArray && !is_array($skillsArray)) {
+                    $skillsArray = json_decode($skillsArray, true);
+                }
+                
+                TechnicalSkill::updateOrCreate(
+                    ['id' => $skill['id']],
+                    [
+                        'category' => $skill['category'],
+                        'skills' => $skillsArray,
+                        'order' => $skill['order'] ?? 0,
+                        'created_at' => $skill['created_at'] ?? now(),
+                        'updated_at' => $skill['updated_at'] ?? now(),
+                    ]
+                );
+            }
+            $this->command->info("✅ تم تصدير " . count($skills) . " مهارة تقنية");
+        } catch (Exception $e) {
+            $this->command->warn("⚠️ خطأ في تصدير المهارات التقنية: " . $e->getMessage());
+        }
+    }
 }
+
+
 
 
 

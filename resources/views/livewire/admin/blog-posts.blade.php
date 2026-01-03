@@ -6,14 +6,12 @@
                 <h1 class="text-3xl font-bold text-foreground mb-2">إدارة المدونة</h1>
                 <p class="text-muted-foreground">إدارة وعرض جميع مقالات المدونة</p>
             </div>
-            <a href="{{ route('admin.blog.create') }}" target="_blank">
-                <x-ui.button>
-                    <svg class="ml-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                    </svg>
-                    إضافة مقال جديد
-                </x-ui.button>
-            </a>
+            <x-ui.button wire:click="openModal">
+                <svg class="ml-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                </svg>
+                إضافة مقال جديد
+            </x-ui.button>
         </div>
 
         <x-ui.card class="border-2">

@@ -82,7 +82,7 @@
             </div>
 
             <!-- Mobile Navigation -->
-            <div 
+            <div
                 x-show="isOpen"
                 x-transition:enter="transition ease-out duration-300"
                 x-transition:enter-start="opacity-0 max-h-0"
@@ -91,6 +91,8 @@
                 x-transition:leave-start="opacity-100 max-h-96"
                 x-transition:leave-end="opacity-0 max-h-0"
                 class="md:hidden overflow-hidden"
+                style="display: none;"
+                x-show.transition=""
             >
                 <div class="py-4 border-t border-border/50 bg-card/95 backdrop-blur-xl rounded-b-2xl">
                     <div class="flex flex-col gap-2">

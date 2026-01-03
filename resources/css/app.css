@@ -114,6 +114,10 @@ All colors MUST be HSL.
 }
 
 @layer utilities {
+  [x-cloak] {
+    display: none !important;
+  }
+
   .text-gradient {
     @apply bg-clip-text text-transparent;
     background-image: var(--gradient-accent);
